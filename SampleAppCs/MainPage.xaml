@@ -35,7 +35,7 @@
 
         <TextBlock />
 
-        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">Each window is created on a the main thread.</TextBlock>
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">Each window is created on the main thread.</TextBlock>
         <Button
             Background="DarkGreen"
             Click="CreateCSWindowOnMainThreadClicked"
