@@ -1,0 +1,8 @@
+namespace UICppWinRT
+{
+    [default_interface]
+    runtimeclass MyPageCppWinRT : Microsoft.UI.Xaml.Controls.Page
+    {
+        MyPageCppWinRT();
+    }
+}

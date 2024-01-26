@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="SampleApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:SampleApp"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <StackPanel
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Orientation="Vertical">
+
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">Each window is created on a new thread.</TextBlock>
+        <Button
+            Background="DarkRed"
+            Click="CreateCSWindowOnNewThreadClicked"
+            Content="Create window with C# page. (LEAKING)" />
+        <Button
+            Background="DarkRed"
+            Click="CreateAndClose50CSWindowOnNewThreadClicked"
+            Content="Create + Close 50 windows with C# pages. (LEAKING)" />
+
+        <Button
+            Background="DarkGreen"
+            Click="CreateCppWindowOnNewThreadClicked"
+            Content="Create window with C++/WinRT page." />
+        <Button
+            Background="DarkGreen"
+            Click="CreateAndClose50CppWindowOnNewThreadClicked"
+            Content="Create + Close 50 windows with C++/WinRT pages." />
+
+        <TextBlock />
+
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">Each window is created on a the main thread.</TextBlock>
+        <Button
+            Background="DarkGreen"
+            Click="CreateCSWindowOnMainThreadClicked"
+            Content="Create window with C# page." />
+        <Button
+            Background="DarkGreen"
+            Click="CreateAndClose50CSWindowOnMainThreadClicked"
+            Content="Create + Close 50 windows with C# pages." />
+    </StackPanel>
+</Page>
