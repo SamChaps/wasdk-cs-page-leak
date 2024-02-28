@@ -60,10 +60,38 @@ namespace SampleApp
         private async Task CreateAndClose50WindowOnNewThread<T>() where T : Page, new()
         {
             var windows = new List<Window>();
+
             for (int i = 0; i < 50; i++)
             {
                 var window = await CreateNewWindowOnNewThread<T>();
                 windows.Add(window);
+                window.DispatcherQueue.ShutdownStarting += (sender, args) =>
+                {
+                    // This will run when the window is closed on the thread.  Xaml will still be running at this point.
+                    // The app will need to have manually set window content to null on this thread and removed event handlers, etc
+                    // to ensure we don't have memory leaks.
+                    int threadId = Thread.CurrentThread.ManagedThreadId;
+                    Debug.WriteLine($"==> {threadId} ShutdownStarting");
+
+                    // After we get this deferral, the DispatcherQueue shutdown will not continue until we call Complete.
+                    var deferral = args.GetDeferral();
+                    var t = sender.CreateTimer();
+
+                    // Give things a chance to wind down.
+                    t.Interval = TimeSpan.FromSeconds(5);
+                    t.Tick += (timer, obj) =>
+                    {
+                        t.Stop();
+                        t = null;
+
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+
+                        Debug.WriteLine($"==> {threadId} ShutdownStarting Done");
+                        deferral.Complete();
+                    };
+                    t.Start();
+                };
             }
 
             await Task.Delay(1000);
@@ -75,6 +103,8 @@ namespace SampleApp
                     window.Content = null;
                     window.Close();
                 });
+
+
             }
 
             windows.Clear();
